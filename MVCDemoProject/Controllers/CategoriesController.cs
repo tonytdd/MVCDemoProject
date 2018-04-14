@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using MVCDemoProject.Models;
 using System.IO;
+using MVCDemoProject.Models.Utility;
 
 namespace MVCDemoProject.Controllers
 {
@@ -51,12 +52,7 @@ namespace MVCDemoProject.Controllers
         {
             if (ModelState.IsValid)
             {
-                //將圖片轉換為byte[]
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    file.InputStream.CopyTo(ms);
-                    categories.Picture = new byte[78].Concat(ms.GetBuffer()).ToArray(); 
-                }
+                categories.Picture = file.InsertHeader();
 
                 db.Categories.Add(categories);
                 db.SaveChanges();
@@ -131,10 +127,7 @@ namespace MVCDemoProject.Controllers
                                             .Select(m => m.Picture)
                                             .SingleOrDefault();
 
-                // 78 is the size of the OLE header for Northwind images
-                ms.Write(image, 78, image.Length - 78);
-
-                return File(ms.ToArray(), "image/jpeg");
+                return File(image.RemoveHeader(), "image/jpeg");
             }
         }
 
