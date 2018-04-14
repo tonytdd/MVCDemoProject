@@ -19,7 +19,7 @@ namespace MVCDemoProject.Controllers
         // GET: Categories
         public ActionResult Index()
         {
-            return View(db.Categories.ToList());
+            return View(db.Categories.Where(c => c.IsDeleted == false).ToList());
         }
 
         // GET: Categories/Details/5
@@ -30,7 +30,7 @@ namespace MVCDemoProject.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Categories categories = db.Categories.Find(id);
-            if (categories == null)
+            if (categories == null || categories.IsDeleted == true)
             {
                 return HttpNotFound();
             }
@@ -114,7 +114,7 @@ namespace MVCDemoProject.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Categories categories = db.Categories.Find(id);
-            db.Categories.Remove(categories);
+            categories.IsDeleted = true;
             db.SaveChanges();
             return RedirectToAction("Index");
         }
