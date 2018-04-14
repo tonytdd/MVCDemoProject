@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'c:\users\tony cheng\documents\visual studio 2015\Projects\MVCDemoProject\MVCDemoProject\Models\Northwind.edmx'. 
+﻿// T4 code generation is enabled for model 'c:\Users\Tony Cheng\Documents\Visual Studio 2015\Projects\MVCDemoProject\MVCDemoProject\Models\Northwind.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.
