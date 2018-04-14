@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MVCDemoProject.Models;
+using System.IO;
 
 namespace MVCDemoProject.Controllers
 {
@@ -113,6 +114,21 @@ namespace MVCDemoProject.Controllers
             db.Categories.Remove(categories);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult GetImage(int id)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                byte[] image = db.Categories.Where(m => m.CategoryID == id)
+                                            .Select(m => m.Picture)
+                                            .SingleOrDefault();
+
+                // 78 is the size of the OLE header for Northwind images
+                ms.Write(image, 78, image.Length - 78);
+
+                return File(ms.ToArray(), "image/jpeg");
+            }
         }
 
         protected override void Dispose(bool disposing)
