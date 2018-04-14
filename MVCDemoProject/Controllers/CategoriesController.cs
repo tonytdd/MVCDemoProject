@@ -47,10 +47,17 @@ namespace MVCDemoProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "CategoryID,CategoryName,Description,Picture")] Categories categories)
+        public ActionResult Create([Bind(Include = "CategoryID,CategoryName,Description,Picture")] Categories categories, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
+                //將圖片轉換為byte[]
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    file.InputStream.CopyTo(ms);
+                    categories.Picture = new byte[78].Concat(ms.GetBuffer()).ToArray(); 
+                }
+
                 db.Categories.Add(categories);
                 db.SaveChanges();
                 return RedirectToAction("Index");
