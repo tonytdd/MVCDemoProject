@@ -13,7 +13,7 @@
 
     @using (Html.BeginForm("Index", "Categories", FormMethod.Get))
     {
-        <input type="search" name="keyword" placeholder="請輸入CategoryName" value=""/>
+        <input type="search" name="keyword" id="keyword" placeholder="請輸入CategoryName" value=""/>
         <input type="submit" value="搜尋" />
     }
 </p>
@@ -54,3 +54,14 @@
 </table>
 
 @Html.PagedListPager(Model as IPagedList, (p) => Url.Action("Index", new { pageNo = p }))
+
+<script type="text/javascript">
+    $(function () {
+        var autoCompleteUrl = '@Url.Action("Find")';
+
+        $('#keyword').autocomplete({
+            source: autoCompleteUrl,
+            minLength: 2,
+        });
+    })
+</script>

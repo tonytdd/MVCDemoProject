@@ -139,6 +139,18 @@ namespace MVCDemoProject.Controllers
             }
         }
 
+        public ActionResult Find(string term)
+        {
+            var data = db.Categories.Where(c => c.CategoryName.Contains(term))
+                                    .Select(c => new {
+                                        id = c.CategoryID,
+                                        label = c.CategoryName,
+                                        value = c.CategoryName,
+                                    });
+
+            return Json(data.ToList(), JsonRequestBehavior.AllowGet);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
