@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MVCDemoProject.Models;
+using PagedList;
 
 namespace MVCDemoProject.Controllers
 {
@@ -15,10 +16,10 @@ namespace MVCDemoProject.Controllers
         private NorthwindEntities db = new NorthwindEntities();
 
         // GET: Orders
-        public ActionResult Index()
+        public ActionResult Index(int pageNo = 1)
         {
             var orders = db.Orders.Include(o => o.Customers).Include(o => o.Employees).Include(o => o.Shippers);
-            return View(orders.ToList());
+            return View(orders.OrderBy(c => c.OrderID).ToPagedList(pageNo, 10));
         }
 
         // GET: Orders/Details/5

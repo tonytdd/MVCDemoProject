@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using MVCDemoProject.Models;
 using System.IO;
 using MVCDemoProject.Models.Utility;
+using PagedList;
 
 namespace MVCDemoProject.Controllers
 {
@@ -17,7 +18,7 @@ namespace MVCDemoProject.Controllers
         private NorthwindEntities db = new NorthwindEntities();
 
         // GET: Categories
-        public ActionResult Index(string keyword)
+        public ActionResult Index(string keyword, int pageNo = 1)
         {
             var data = db.Categories.Where(c => c.IsDeleted == false);
 
@@ -26,7 +27,7 @@ namespace MVCDemoProject.Controllers
                 data = data.Where(c => c.CategoryName.Contains(keyword));
             }
 
-            return View(data.ToList());
+            return View(data.OrderBy(c => c.CategoryID).ToPagedList(pageNo, 10));
         }
 
         // GET: Categories/Details/5
