@@ -17,9 +17,16 @@ namespace MVCDemoProject.Controllers
         private NorthwindEntities db = new NorthwindEntities();
 
         // GET: Categories
-        public ActionResult Index()
+        public ActionResult Index(string keyword)
         {
-            return View(db.Categories.Where(c => c.IsDeleted == false).ToList());
+            var data = db.Categories.Where(c => c.IsDeleted == false);
+
+            if (!String.IsNullOrWhiteSpace(keyword))
+            {
+                data = data.Where(c => c.CategoryName.Contains(keyword));
+            }
+
+            return View(data.ToList());
         }
 
         // GET: Categories/Details/5
